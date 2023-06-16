@@ -2,6 +2,7 @@ import { useState } from "react"
 import Header from "./components/Header"
 import FeedbackList from "./components/FeedbackList"
 import FeedbackData from "./data/FeedbackData"
+import FeedbackStats from "./components/FeedbackStats"
 
 function App() {
   // App level state
@@ -19,8 +20,8 @@ function App() {
         - <Header /> is using a default prop now
       */}
       <Header />
-
       <div className="container">
+        <FeedbackStats feedback={feedback} />
         {/* To add state to the 'FeedbackList' component, create a prop */}
         <FeedbackList feedback={feedback} handleDelete={deleteFeedback} />
       </div>
