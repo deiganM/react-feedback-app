@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import Card from "./shared/Card"
+import Button from './shared/Button'
 
 function FeedbackForm() {
   // Usually have state for each input in the form
@@ -23,7 +24,10 @@ function FeedbackForm() {
             //  the initial (default) value of the input field, text is state, which has a default of ''
             value={text}
           />
-          <button type="submit">Send</button>
+          {/* <button type="submit">Send</button> */}
+          <Button type='submit'>
+            Send
+          </Button>
         </div>
       </form>
     </Card>
