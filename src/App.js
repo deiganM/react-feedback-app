@@ -3,6 +3,7 @@ import Header from "./components/Header"
 import FeedbackList from "./components/FeedbackList"
 import FeedbackData from "./data/FeedbackData"
 import FeedbackStats from "./components/FeedbackStats"
+import FeedbackForm from "./components/FeedbackForm"
 
 function App() {
   // App level state
@@ -21,6 +22,7 @@ function App() {
       */}
       <Header />
       <div className="container">
+        <FeedbackForm />
         <FeedbackStats feedback={feedback} />
         {/* To add state to the 'FeedbackList' component, create a prop */}
         <FeedbackList feedback={feedback} handleDelete={deleteFeedback} />
