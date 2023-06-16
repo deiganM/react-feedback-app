@@ -1,20 +1,56 @@
 import {useState} from 'react'
 import Card from "./shared/Card"
 import Button from './shared/Button'
+import RatingSelect from './RatingSelect'
 
-function FeedbackForm() {
+function FeedbackForm({handleAdd}) {
   // Usually have state for each input in the form
   const [text, setText] = useState('')
+  const [rating, setRating] = useState(10)
+  const [btnDisabled, setBtnDisabled] = useState(true)
+  const [message, setMessage] = useState('')
 
   const handleTextChange = (event) => {
+    // try a ternary just to see
+    // return text === '' ? (setBtnDisabled(true), setMessage(null))
+    //   : 
+
+    if(text === '') {
+      setBtnDisabled(true)
+      setMessage(null)
+    } else if (text !== '' && text.trim().length <= 10) {
+      setMessage('Text must be at least 10 characters')
+      setBtnDisabled(true)
+    } else {
+      setMessage(null)
+      setBtnDisabled(false)
+    }
+
     setText(event.target.value)
+  }
+
+  const handleSubmit = (event) => {
+    // This involved global State in App.js (similar to 'deleteFeedback')
+    event.preventDefault()
+    if(text.trim().length > 10) {
+      const newFeedback = {
+        text, //text(key): text('text' value form state)
+        rating // rating: rating
+      }
+
+      handleAdd(newFeedback)
+      setText('')
+    }
   }
 
   return (
     <Card>
-      <form>
+      <form onSubmit={handleSubmit}>
         <h2>How would you rate your service with us?</h2>
-        {/* @todo - rating select component */}
+        {/* select is a prop that is a function(see RatingSelect.jsx) 
+          - I believe it's taking the rating state and running setRating?
+        */}
+        <RatingSelect select={(rating) => setRating(rating)} />
         <div className="input-group">
           {/* handleTextChange is getting the user input into text state */}
           <input 
@@ -25,10 +61,13 @@ function FeedbackForm() {
             value={text}
           />
           {/* <button type="submit">Send</button> */}
-          <Button type='submit'>
+          <Button type='submit' isDisabled={btnDisabled}>
             Send
           </Button>
         </div>
+
+        {/* Not sure if I want to start using short circuiting, look more into issues */}
+        {message ? <div className='message'>{message}</div> : ''}
       </form>
     </Card>
   )
