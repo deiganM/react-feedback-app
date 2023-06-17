@@ -6,7 +6,9 @@ import FeedbackList from "./components/FeedbackList"
 import FeedbackData from "./data/FeedbackData"
 import FeedbackStats from "./components/FeedbackStats"
 import FeedbackForm from "./components/FeedbackForm"
+import AboutIconLink from './components/AboutIconLink'
 import AboutPage from './pages/AboutPage'
+import { FeedbackProvider } from './context/FeedbackContext'
 
 function App() {
   // App level state
@@ -28,26 +30,37 @@ function App() {
 
   return (
     <Router>
+      {/* Context API requires a "provider" to have access to state and context */}
+      <FeedbackProvider>
       <Header />
-      <div className="container">
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <>
-                <FeedbackForm handleAdd={addFeedback} />
-                <FeedbackStats feedback={feedback} />
-                {/* To add state to the 'FeedbackList' component, create a prop */}
-                <FeedbackList
-                  feedback={feedback}
-                  handleDelete={deleteFeedback}
-                />
-              </>
-            }></Route>
-          <Route path="/about" element={<AboutPage />} />
-        </Routes>
-      </div>
+        <div className="container">
+          <Routes>
+            <Route
+              exact path="/"
+              element={
+                <>
+                  <FeedbackForm handleAdd={addFeedback} />
+                  <FeedbackStats 
+                  />
+                  {/* To add state to the 'FeedbackList' component, create a prop */}
+                  <FeedbackList
+                    handleDelete={deleteFeedback}
+                  />
+                </>
+              }>
+            </Route>
+            <Route 
+              path="/about" 
+              element={
+                <>
+                  <AboutPage />
+                </>
+              } 
+            />
+          </Routes>
+          <AboutIconLink />
+        </div>
+      </FeedbackProvider>
     </Router>
   )
 }
