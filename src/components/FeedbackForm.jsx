@@ -1,4 +1,4 @@
-import {useState, useContext} from 'react'
+import {useState, useContext, useEffect} from 'react'
 import Card from "./shared/Card"
 import Button from './shared/Button'
 import RatingSelect from './RatingSelect'
@@ -11,7 +11,22 @@ function FeedbackForm() {
   const [btnDisabled, setBtnDisabled] = useState(true)
   const [message, setMessage] = useState('')
 
-  const {addFeedback} = useContext(FeedbackContext)
+  const {addFeedback, feedbackEdit} = useContext(FeedbackContext)
+
+  // This is very similar to Vue
+  // good way to make HTTP requests
+  useEffect(() => {
+    // check to see if there's anything in 'feedbackEdit' first
+    if(feedbackEdit.edit === true) {
+      // When 'edit' is clicked, add text, rating, set button to enabled
+      setBtnDisabled(false)
+      setText(feedbackEdit.item.text)
+      setRating(feedbackEdit.item.rating)
+    }
+  },
+  // Array of dependencies, if these change, function in useEffect() will run
+  //  - if left empty, useEffect will just run on load
+  [feedbackEdit]) 
 
   const handleTextChange = (event) => {
     // try a ternary just to see

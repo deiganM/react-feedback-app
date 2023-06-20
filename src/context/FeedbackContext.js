@@ -56,7 +56,8 @@ export const FeedbackProvider = ({children}) => {
     // need to pass in functions too.
     deleteFeedback,
     addFeedback,
-    editFeedback
+    editFeedback,
+    feedbackEdit
   }}>
     {children}
   </FeedbackContext.Provider>
