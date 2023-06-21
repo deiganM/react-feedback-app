@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react'
-import { v4 as uuidv4 } from 'uuid'
+// import { v4 as uuidv4 } from 'uuid'
 
 const FeedbackContext = createContext()
 
@@ -21,7 +21,8 @@ export const FeedbackProvider = ({children}) => {
   // fetch feedback
   const fetchFeedback = async () => {
     // json server lets you add a query to the end
-    const response = await fetch('http://localhost:5000/feedback?_sort=id&_order=desc')
+    // using a proxy set in package.json to get URL ('http://localhost:5000')
+    const response = await fetch(`/feedback?_sort=id&_order=desc`)
     const data = await response.json()
     // setting the feedback from db.json
     setFeedback(data)
@@ -38,13 +39,31 @@ export const FeedbackProvider = ({children}) => {
   }
 
   // Add feedback
-  const addFeedback = (newFeedback) => {
+  const addFeedback = async (newFeedback) => {
+    // making POST call to the backend. 
+    const response = await fetch('/feedback', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify(newFeedback)
+    })
+
+    const data = await response.json()
+    
     // To give my newFeedback object an id
-    newFeedback.id = uuidv4()
+    // To give a unique id in frontend before json server
+    // newFeedback.id = uuidv4()
+
     // remember state is immuteable, basically have to make a copy
     // adding the new one then [...feedback] is getting/adding what's already there
-    setFeedback([newFeedback, ...feedback])
+    setFeedback([data, ...feedback])
   }
+  // This was just for frontend, before json server
+  // const addFeedback = (newFeedback) => {
+  //   newFeedback.id = uuidv4()
+  //   setFeedback([newFeedback, ...feedback])
+  // }
 
   // Update feedback item
   const updateFeedback = (id, updItem) => {
